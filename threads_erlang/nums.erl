@@ -16,9 +16,8 @@ zero_p(EvenPID) ->
     {Digit, MainPID} when is_pid(EvenPID) ->
       if
         Digit == 0 ->
-          io:format("~w ", [Digit]),
-          io:format("ZERO Process worked ~n"),
           MainPID ! next,
+          io:format("~w ", [Digit]),
           zero_p(EvenPID);
         Digit /= 0 ->
           EvenPID ! {Digit, MainPID},
@@ -30,10 +29,9 @@ even_p(OddPID) ->
   receive
     {Digit, MainPID} when is_pid(OddPID) ->
       if Digit rem 2 == 0 ->
-          io:format("~w ", [Digit]),
-          io:format("EVEN Process worked ~n"),
-          MainPID ! next,
-          even_p(OddPID);
+        MainPID ! next,
+        io:format("~w ", [Digit]),
+        even_p(OddPID);
         Digit rem 2 /= 0 ->
           OddPID ! {Digit, MainPID},
           even_p(OddPID)
@@ -43,9 +41,8 @@ even_p(OddPID) ->
 odd_p() ->
   receive
     {Digit, MainPID} when is_pid(MainPID) ->
-      io:format("~w ", [Digit]),
-      io:format("ODD Process worked ~n"),
       MainPID ! next,
+      io:format("~w ", [Digit]),
       odd_p()
   end.
 
